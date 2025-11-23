@@ -76,9 +76,7 @@ const sortsObj: Record<'createdAt' | 'price' | 'priority', string> = {
 }
 
 const MainPage = () => {
-  const [status, setStatus] = useState<number | undefined>(
-    undefined
-  )
+  const [status, setStatus] = useState<number[]>([])
   const [cat, setCat] = useState<number | undefined>(
     undefined
   )
@@ -100,14 +98,14 @@ const MainPage = () => {
     const foundCategory = categories.find(c => c.name === value)
     setCat(foundCategory ? foundCategory.id : undefined)
   }
-  const changeStatus = (value: number | null) => {
-    setStatus(value ?? undefined)
+  const changeStatus = (value: number[]) => {
+    setStatus(value)
   }
   const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value)
   }
   const reset = () => {
-    setStatus(undefined)
+    setStatus([])
     setCat(undefined)
     setMin(undefined)
     setMax(undefined)
@@ -125,13 +123,14 @@ const MainPage = () => {
     }
   }
   const navigate = useNavigate()
+  const statusValues = status.length > 0
+    ? status.map(id => statuses.find(s => s.id === id)?.value).filter(Boolean) as AdStatus[]
+    : undefined
+
   const { data, isLoading, error } = useAds({
     page: page,
     limit: 10,
-    status:
-      status !== undefined
-        ? statuses.find(s => s.id === status)?.value
-        : undefined,
+    status: statusValues,
     categoryId: cat,
     minPrice: min,
     maxPrice: max,
@@ -156,6 +155,7 @@ const MainPage = () => {
             <Select
               className={s.select}
               placeholder="статус"
+              mode="multiple"
               value={status}
               options={statuses.map(s => {
                 return {

@@ -39,7 +39,15 @@ const CardAd: React.FC<CardPropsType> = ({ ad, onClick }) => {
         <Image width={120} height={120} src={ad.images[0]} preview={false} />
         <Flex vertical gap={5}>
           <Title level={4}>{ad.title}</Title>
-          <Tag className={status.className}>{status.status}</Tag>
+          <Flex gap={8} align="center">
+            <Tag className={status.className}>{status.status}</Tag>
+            {ad.priority === 'urgent' && (
+              <Tag className={s.priorityUrgent}>Срочный</Tag>
+            )}
+            {ad.priority === 'normal' && (
+              <Tag className={s.priorityNormal}>Обычный</Tag>
+            )}
+          </Flex>
           <Flex gap={8} align="center">
             <Text strong>{ad.price.toLocaleString('ru-RU')} ₽</Text>
           </Flex>

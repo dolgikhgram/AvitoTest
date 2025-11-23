@@ -178,7 +178,11 @@ const ItemPage = () => {
               </Col>
             </Row>
 
-            <Description description={ad.description} seller={ad.seller} />
+            <Description
+              description={ad.description}
+              seller={ad.seller}
+              chars={ad.characteristics}
+            />
 
             {show && (
               <div className={s.actions}>

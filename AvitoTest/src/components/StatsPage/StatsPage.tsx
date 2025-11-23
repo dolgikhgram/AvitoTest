@@ -2,7 +2,12 @@ import { Typography, Row, Col, Card, Button } from 'antd'
 import { Column, Pie } from '@ant-design/charts'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSummaryStats, useActivityChart, useDecisionsChart } from '../../api'
+import {
+  useSummaryStats,
+  useActivityChart,
+  useDecisionsChart,
+  useCategoriesChart,
+} from '../../api'
 import type { StatsPeriod } from '../../types'
 import Period from './Period/Period'
 import StatsCards from './StatsCards/StatsCards'
@@ -18,6 +23,11 @@ const StatsPage = () => {
   const { data: decisions, isLoading: decisionsLoading } = useDecisionsChart({
     period,
   })
+  const { data: categories, isLoading: categoriesLoading } = useCategoriesChart(
+    {
+      period,
+    }
+  )
 
   const data = activity || []
   const chart = data.map(item => ({
@@ -34,6 +44,13 @@ const StatsPage = () => {
         { type: 'Отклонено', value: decisions.rejected },
         { type: 'Доработка', value: decisions.requestChanges },
       ].filter(item => item.value > 0)
+    : []
+
+  const categoriesData = categories
+    ? Object.keys(categories).map(category => ({
+        category: category,
+        value: categories[category],
+      }))
     : []
 
   const back = () => {
@@ -80,6 +97,26 @@ const StatsPage = () => {
                 angleField="value"
                 colorField="type"
                 color={['#52c41a', '#ff4d4f', '#faad14']}
+              />
+            )}
+          </Card>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col xs={24}>
+          <Card>
+            <Typography.Title level={4}>График по категориям</Typography.Title>
+            {categoriesLoading ? (
+              <div>Загрузка...</div>
+            ) : categoriesData.length === 0 ? (
+              <div>График не загрузился</div>
+            ) : (
+              <Column
+                data={categoriesData}
+                xField="category"
+                yField="value"
+                color={['#1890ff']}
               />
             )}
           </Card>
