@@ -1,11 +1,6 @@
 import { Typography, Radio } from 'antd'
+import type { PeriodProps } from './types'
 import s from './Period.module.css'
-import type { StatsPeriod } from '../../../types'
-
-type PeriodProps = {
-  value: StatsPeriod
-  onChange: (value: StatsPeriod) => void
-}
 
 const Period = ({ value, onChange }: PeriodProps) => {
   return (

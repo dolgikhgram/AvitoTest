@@ -25,7 +25,7 @@ export const useApproveAd = (id: number) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => approveAd(id),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['ads'] })
       queryClient.invalidateQueries({ queryKey: ['ad', id] })
     },
@@ -37,7 +37,7 @@ export const useRejectAd = (id: number) => {
 
   return useMutation({
     mutationFn: (params: RejectAdParams) => rejectAd(id, params),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['ads'] })
       queryClient.invalidateQueries({ queryKey: ['ad', id] })
     },
@@ -48,7 +48,7 @@ export const useRequestChanges = (id: number) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (params: RequestChangesParams) => requestChanges(id, params),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['ads'] })
       queryClient.invalidateQueries({ queryKey: ['ad', id] })
     },

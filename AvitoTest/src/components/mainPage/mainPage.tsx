@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAds } from '../../api'
 import {
-  Alert,
   Button,
   Col,
   Empty,
@@ -18,62 +17,20 @@ import { useCallback, useState } from 'react'
 import type { Advertisement, AdStatus } from '../../types'
 import CardAd from './Card/Card'
 import s from './mainPage.module.css'
+import { SearchOutlined } from '@ant-design/icons'
 import {
-  SearchOutlined,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-} from '@ant-design/icons'
-type CategoryType = {
-  id: number
-  name: string
-}
-
-type categoriesType = Array<CategoryType>
-
-type StatusType = {
-  id: number
-  name: string
-  value: AdStatus
-}
-
-type sortType = {
-  id: number
-  name: string
-  value: 'createdAt' | 'price' | 'priority'
-}
-
-type sortsType = Array<sortType>
-
-type statusesType = Array<StatusType>
-const categories: categoriesType = [
-  { id: 0, name: 'Электроника' },
-  { id: 1, name: 'Недвижимость' },
-  { id: 2, name: 'Транспорт' },
-  { id: 3, name: 'Работа' },
-  { id: 4, name: 'Услуги' },
-  { id: 5, name: 'Животные' },
-  { id: 6, name: 'Мода' },
-  { id: 7, name: 'Детское' },
-]
-
-const statuses: statusesType = [
-  { id: 0, name: 'ожидает модерации', value: 'pending' },
-  { id: 1, name: 'одобрено', value: 'approved' },
-  { id: 2, name: 'отклонено', value: 'rejected' },
-  { id: 3, name: 'черновик', value: 'draft' },
-]
-
-const sorts: sortsType = [
-  { id: 0, name: 'По дате создания', value: 'createdAt' },
-  { id: 1, name: 'По цене ', value: 'price' },
-  { id: 2, name: 'По приоритету', value: 'priority' },
-]
-
-const sortsObj: Record<'createdAt' | 'price' | 'priority', string> = {
-  createdAt: 'По дате создания',
-  price: 'По цене ',
-  priority: 'По приоритету',
-}
+  categories,
+  statuses,
+  sorts,
+  sortsObj,
+  statusOptions,
+  categoryOptions,
+  sortOptions,
+  orderOptions,
+  PLACEHOLDERS,
+  BUTTONS,
+  DEFAULT_VALUES,
+} from './consts'
 
 const MainPage = () => {
   const [status, setStatus] = useState<number[]>([])
@@ -83,11 +40,11 @@ const MainPage = () => {
   const [min, setMin] = useState<number | undefined>(undefined)
   const [max, setMax] = useState<number | undefined>(undefined)
   const [text, setText] = useState<string>('')
-  const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(DEFAULT_VALUES.page)
   const [sort, setSort] = useState<'createdAt' | 'price' | 'priority'>(
-    'createdAt'
+    DEFAULT_VALUES.sort
   )
-  const [order, setOrder] = useState<'asc' | 'desc'>('desc')
+  const [order, setOrder] = useState<'asc' | 'desc'>(DEFAULT_VALUES.order)
   const changeMin = (value: number | null) => {
     setMin(value ?? 0)
   }
@@ -115,7 +72,6 @@ const MainPage = () => {
     setPage(page)
   }
   const sortChange = (val: string) => {
-    // Преобразуем текст обратно в значение для API
     const foundSort = sorts.find(s => s.name === val)
     if (foundSort && foundSort.value) {
       setSort(foundSort.value)
@@ -129,7 +85,7 @@ const MainPage = () => {
 
   const { data, isLoading, error } = useAds({
     page: page,
-    limit: 10,
+    limit: DEFAULT_VALUES.limit,
     status: statusValues,
     categoryId: cat,
     minPrice: min,
@@ -154,49 +110,39 @@ const MainPage = () => {
           <Space wrap size={'middle'}>
             <Select
               className={s.select}
-              placeholder="статус"
+              placeholder={PLACEHOLDERS.status}
               mode="multiple"
               value={status}
-              options={statuses.map(s => {
-                return {
-                  label: s.name,
-                  value: s.id,
-                }
-              })}
+              options={statusOptions}
               onChange={changeStatus}
             />
             <Select
               className={s.select}
-              placeholder="категория"
+              placeholder={PLACEHOLDERS.category}
               value={
                 cat !== undefined
                   ? categories[cat].name
                   : undefined
               }
-              options={categories.map(c => {
-                return {
-                  label: c.name,
-                  value: c.name,
-                }
-              })}
+              options={categoryOptions}
               onChange={changeCat}
             />
             <Space>
               <div>цена :</div>
               <InputNumber
-                placeholder="от"
+                placeholder={PLACEHOLDERS.priceFrom}
                 value={min}
                 onChange={changeMin}
               />
               <div>-</div>
               <InputNumber
-                placeholder="до"
+                placeholder={PLACEHOLDERS.priceTo}
                 value={max}
                 onChange={changeMax}
               />
             </Space>
             <Input
-              placeholder={'Поиск по названию'}
+              placeholder={PLACEHOLDERS.search}
               prefix={<SearchOutlined />}
               value={text}
               allowClear
@@ -205,47 +151,23 @@ const MainPage = () => {
             <Space>
               <span>Сортировать :</span>
               <Select
-                placeholder="поле сортировки"
+                placeholder={PLACEHOLDERS.sortField}
                 value={sortsObj[sort]}
-                options={sorts.map(s => {
-                  return {
-                    label: s.name,
-                    value: s.name,
-                  }
-                })}
+                options={sortOptions}
                 onChange={sortChange}
               />
               <Select
-                placeholder="Направление"
+                placeholder={PLACEHOLDERS.sortOrder}
                 value={order}
-                options={[
-                  {
-                    label: (
-                      <Space>
-                        <ArrowUpOutlined />
-                        <span>По возрастанию</span>
-                      </Space>
-                    ),
-                    value: 'asc',
-                  },
-                  {
-                    label: (
-                      <Space>
-                        <ArrowDownOutlined />
-                        <span>По убыванию</span>
-                      </Space>
-                    ),
-                    value: 'desc',
-                  },
-                ]}
+                options={orderOptions}
                 onChange={changeOrder}
               />
             </Space>
             <Button type={'primary'} onClick={reset}>
-              Сбросить
+              {BUTTONS.reset}
             </Button>
             <Button type={'default'} onClick={() => navigate('/stats')}>
-              Статистика
+              {BUTTONS.stats}
             </Button>
           </Space>
         </div>

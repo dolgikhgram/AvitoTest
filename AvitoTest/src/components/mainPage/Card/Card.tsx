@@ -1,13 +1,8 @@
 import React from 'react'
 import s from './Card.module.css'
-import type { Advertisement } from '../../../types'
+import type { CardPropsType } from './types'
 import { Button, Flex, Image, Tag, Typography } from 'antd'
 import { Card } from 'antd'
-
-type CardPropsType = {
-  ad: Advertisement
-  onClick?: () => void
-}
 
 const { Title, Text } = Typography
 

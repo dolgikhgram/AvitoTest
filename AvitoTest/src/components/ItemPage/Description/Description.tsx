@@ -1,12 +1,7 @@
 import { Typography, Table } from 'antd'
-import type { Seller } from '../../../types'
+import type { DescriptionProps } from './types'
+import { columns } from './consts'
 import s from './Description.module.css'
-
-type DescriptionProps = {
-  description: string
-  seller: Seller
-  chars: Record<string, string>
-}
 
 const Description = ({ description, seller, chars }: DescriptionProps) => {
   const getYearsOnSite = () => {
@@ -24,19 +19,6 @@ const Description = ({ description, seller, chars }: DescriptionProps) => {
     }
   })
 
-  const cols = [
-    {
-      title: 'Характеристика',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Значение',
-      dataIndex: 'value',
-      key: 'value',
-    },
-  ]
-
   return (
     <div className={s.desc}>
       <Typography.Title level={3}>Полное описание</Typography.Title>
@@ -45,7 +27,7 @@ const Description = ({ description, seller, chars }: DescriptionProps) => {
       {data.length > 0 && (
         <div>
           <Typography.Title level={3}>Характеристики</Typography.Title>
-          <Table dataSource={data} columns={cols} pagination={false} />
+          <Table dataSource={data} columns={columns} pagination={false} />
         </div>
       )}
 

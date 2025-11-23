@@ -1,10 +1,6 @@
 import { Card, Typography, Space, Tag } from 'antd'
-import type { ModerationHistory as ModerationHistoryType } from '../../../types'
+import type { ModerationHistoryProps } from './types'
 import s from './ModerationHistory.module.css'
-
-type ModerationHistoryProps = {
-  history: ModerationHistoryType[]
-}
 
 const actionObj = {
   approved: {

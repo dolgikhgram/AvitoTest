@@ -1,9 +1,6 @@
 import { Row, Col, Image, Typography } from 'antd'
+import type { GalleryProps } from './types'
 import s from './Gallery.module.css'
-
-type GalleryProps = {
-  images: string[]
-}
 
 const Gallery = ({ images }: GalleryProps) => {
   return (

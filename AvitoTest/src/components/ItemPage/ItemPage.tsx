@@ -7,7 +7,6 @@ import {
   useRequestChanges,
   useAds,
 } from '../../api'
-import { useQueryClient } from '@tanstack/react-query'
 import {
   Alert,
   Button,
@@ -55,39 +54,36 @@ const ItemPage = () => {
   const [text, setText] = useState('')
 
   const adId = Number(id)
-  const queryClient = useQueryClient()
   const approveMutation = useApproveAd(adId)
   const rejectMutation = useRejectAd(adId)
   const requestChangesMutation = useRequestChanges(adId)
 
-  const approve = () => {
+  const handleApprove = () => {
     approveMutation.mutate(undefined, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['ads'] })
-        queryClient.invalidateQueries({ queryKey: ['ad', adId] })
         setShow(false)
       },
     })
   }
 
-  const reject = () => {
+  const handleReject = () => {
     setType('reject')
     setOpen(true)
   }
 
-  const fix = () => {
+  const handleFix = () => {
     setType('requestChanges')
     setOpen(true)
   }
 
-  const cancel = () => {
+  const handleCancel = () => {
     setOpen(false)
     setReason('Запрещенный товар')
     setOther('')
     setText('')
   }
 
-  const submit = () => {
+  const handleSubmit = () => {
     if (reason === 'Другое' && !other.trim()) {
       return
     }
@@ -103,8 +99,6 @@ const ItemPage = () => {
     if (type === 'reject') {
       rejectMutation.mutate(params, {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['ads'] })
-          queryClient.invalidateQueries({ queryKey: ['ad', adId] })
           setOpen(false)
           setReason('Запрещенный товар')
           setOther('')
@@ -115,8 +109,6 @@ const ItemPage = () => {
     } else {
       requestChangesMutation.mutate(params, {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['ads'] })
-          queryClient.invalidateQueries({ queryKey: ['ad', adId] })
           setOpen(false)
           setReason('Запрещенный товар')
           setOther('')
@@ -135,17 +127,17 @@ const ItemPage = () => {
   const prevId = index > 0 ? list[index - 1]?.id : null
   const nextId = index < list.length - 1 ? list[index + 1]?.id : null
 
-  const back = () => {
+  const handleBack = () => {
     navigate('/list')
   }
 
-  const prev = () => {
+  const handlePrev = () => {
     if (prevId) {
       navigate(`/item/${prevId}`)
     }
   }
 
-  const next = () => {
+  const handleNext = () => {
     if (nextId) {
       navigate(`/item/${nextId}`)
     }
@@ -190,7 +182,7 @@ const ItemPage = () => {
                   <Button
                     className={s.btnOk}
                     icon={<CheckOutlined />}
-                    onClick={approve}
+                    onClick={handleApprove}
                     loading={approveMutation.isPending}
                   >
                     Одобрить
@@ -198,14 +190,14 @@ const ItemPage = () => {
                   <Button
                     className={s.btnBad}
                     icon={<CloseOutlined />}
-                    onClick={reject}
+                    onClick={handleReject}
                   >
                     Отклонить
                   </Button>
                   <Button
                     className={s.btnFix}
                     icon={<ReloadOutlined />}
-                    onClick={fix}
+                    onClick={handleFix}
                   >
                     Доработка
                   </Button>
@@ -216,8 +208,8 @@ const ItemPage = () => {
             <Modal
               title="Отклонение"
               open={open}
-              onCancel={cancel}
-              onOk={submit}
+              onCancel={handleCancel}
+              onOk={handleSubmit}
               okText="Отправить"
               cancelText="Отмена"
               okButtonProps={{ className: s.btnSend }}
@@ -263,7 +255,7 @@ const ItemPage = () => {
             <div className={s.nav}>
               <Button
                 icon={<LeftOutlined />}
-                onClick={back}
+                onClick={handleBack}
                 className={s.btnBack}
               >
                 К списку
@@ -271,7 +263,7 @@ const ItemPage = () => {
               <Space>
                 <Button
                   icon={<LeftOutlined />}
-                  onClick={prev}
+                  onClick={handlePrev}
                   disabled={!prevId}
                   className={s.btnNav}
                 >
@@ -280,7 +272,7 @@ const ItemPage = () => {
                 <span className={s.sep}>|</span>
                 <Button
                   icon={<RightOutlined />}
-                  onClick={next}
+                  onClick={handleNext}
                   disabled={!nextId}
                   className={s.btnNav}
                 >

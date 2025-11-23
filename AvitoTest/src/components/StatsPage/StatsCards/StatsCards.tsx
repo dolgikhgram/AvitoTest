@@ -5,12 +5,8 @@ import {
   ClockCircleOutlined,
   FileTextOutlined,
 } from '@ant-design/icons'
+import type { StatsCardsProps } from './types'
 import s from './StatsCards.module.css'
-import type { StatsSummary } from '../../../types'
-
-type StatsCardsProps = {
-  data?: StatsSummary
-}
 
 const time = (seconds: number) => {
   const minutes = Math.floor(seconds / 60)
