@@ -1,0 +1,87 @@
+.box {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.actions {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.btnOk {
+  background-color: #52c41a;
+  border-color: #000;
+  border-width: 2px;
+  color: #000;
+  font-weight: bold;
+}
+
+.btnBad {
+  background-color: #ff4d4f;
+  border-color: #000;
+  border-width: 2px;
+  color: #000;
+  font-weight: bold;
+}
+
+.btnFix {
+  background-color: #faad14;
+  border-color: #000;
+  border-width: 2px;
+  color: #000;
+  font-weight: bold;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reasons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.other {
+  margin-top: 10px;
+}
+
+.text {
+  margin-top: 10px;
+}
+
+.btnSend {
+  background-color: #ff4d4f;
+  border-color: #000;
+  border-width: 2px;
+  color: #000;
+  font-weight: bold;
+}
+
+.nav {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.btnBack {
+  border-color: #000;
+  border-width: 2px;
+}
+
+.btnNav {
+  border-color: #000;
+  border-width: 2px;
+}
+
+.sep {
+  margin: 0 10px;
+  color: #000;
+  font-weight: bold;
+}
+

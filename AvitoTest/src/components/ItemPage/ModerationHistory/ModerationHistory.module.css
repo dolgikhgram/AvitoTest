@@ -1,0 +1,22 @@
+.ok {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: #fff;
+}
+
+.bad {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: #fff;
+}
+
+.fix {
+  background-color: #faad14;
+  border-color: #faad14;
+  color: #fff;
+}
+
+.list {
+  width: 100%;
+}
+

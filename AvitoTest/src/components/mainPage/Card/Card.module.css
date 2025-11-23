@@ -1,0 +1,55 @@
+.box{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+}
+.inner{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+.badge{
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    line-height: 1.2;
+    padding: 2px;
+}
+.btn{
+    background-color: #52c41a;
+    border-color: #52c41a;
+}
+
+.statusWait {
+    background-color: #faad14;
+    border-color: #faad14;
+    color: #fff;
+}
+
+.statusOk {
+    background-color: #52c41a;
+    border-color: #52c41a;
+    color: #fff;
+}
+
+.statusBad {
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+    color: #fff;
+}
+
+.statusNew {
+    background-color: #1890ff;
+    border-color: #1890ff;
+    color: #fff;
+}
